@@ -22,24 +22,9 @@ func main() {
 	selector := "#page-sidebar div ul li button"
 
 	url := "https://console-openshift-console.apps.rhoda-lab.51ty.p1.openshiftapps.com/dashboards"
-	// url:= "https://console-openshift-console.apps.rhoda-sp-prod.lue0.p1.openshiftapps.com/dashboards"
-	//var data string
-	//
-	//if err := chromedp.Run(ctx,
-	//	SetCookie("openshift-session-token", "sha256~_yK7eagm1YMYCqRSkvuZhvnNcE5nEcIBmF0C1RE4qRs", "console-openshift-console.apps.rhoda-lab.51ty.p1.openshiftapps.com", "/", false, false),
-	//	chromedp.Navigate(url),
-	//	chromedp.WaitVisible(`#page-sidebar`),
-	//	chromedp.OuterHTML("html", &data, chromedp.ByQuery),
-	//	//	chromedp.Nodes(`button`, &nodes, chromedp.ByQueryAll),
-	//
-	//	chromedp.Nodes(selector, &nodes),
-	//	//chromedp.Text(`button`, &selector, chromedp.NodeVisible, chromedp.ByQuery),
-	//); err != nil {
-	//	panic(err)
-	//}
 
 	if err := chromedp.Run(ctx,
-		SetCookie("openshift-session-token", "sha256~_yK7eagm1YMYCqRSkvuZhvnNcE5nEcIBmF0C1RE4qRs", "console-openshift-console.apps.rhoda-lab.51ty.p1.openshiftapps.com", "/", false, false),
+		SetCookie("openshift-session-token", "", "console-openshift-console.apps.rhoda-lab.51ty.p1.openshiftapps.com", "/", false, false),
 		chromedp.Navigate(url),
 		chromedp.WaitVisible(`#page-sidebar`),
 		chromedp.Nodes(selector, &nodesButtonList),
@@ -63,7 +48,7 @@ func main() {
 	u := fmt.Sprintf("https://console-openshift-console.apps.rhoda-lab.51ty.p1.openshiftapps.com%s", href)
 	//	u := "https://console-openshift-console.apps.rhoda-lab.51ty.p1.openshiftapps.com" + href
 	fmt.Printf(u)
-	selectorDA := "#content-scrollable h1"
+	selectorDA := "#content-scrollable h1 div span"
 	var dataAccessNode []*cdp.Node
 	var outer string
 	err := chromedp.Run(ctx,
@@ -81,7 +66,8 @@ func main() {
 	fmt.Println(outer)
 	for _, nodeda := range dataAccessNode {
 		//NodeName is the button here, looping through buttons to get Data services
-		fmt.Println(nodeda.NodeName)
+		foundText := nodeda.Parent.Children[0].NodeValue
+		fmt.Println(foundText)
 	}
 	//	status2 := resp.Status
 	fmt.Println(textExists)
